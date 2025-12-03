@@ -21,6 +21,7 @@ import (
 	"github.com/StackExchange/dnscontrol/v4/pkg/zonecache"
 	"github.com/StackExchange/dnscontrol/v4/providers"
 	"github.com/StackExchange/dnscontrol/v4/providers/cloudflare/rtypes/cfsingleredirect"
+	"github.com/StackExchange/dnscontrol/v4/pkg/proxyutil"
 )
 
 /*
@@ -651,16 +652,38 @@ func newCloudflare(m map[string]string, metadata json.RawMessage) (providers.DNS
 	// https://pkg.go.dev/github.com/cloudflare/cloudflare-go#UsingRetryPolicy
 	// The defaults are UsingRetryPolicy(3, 1, 30)
 
+	// 1. Создаем HTTP клиент (proxyutil)
+	// Исправлено: передаем 'm' (карта конфига) и 'metadata'
+	httpClient, proxyErr := proxyutil.MakeHTTPClient("cloudflare", m, metadata)
+	if proxyErr != nil {
+		return nil, proxyErr
+	}
+
+	// 2. Формируем опции для Cloudflare
+	// Объединяем RetryPolicy (optRP) и наш HTTP-клиент
+	opts := []cloudflare.Option{
+		optRP,                             // Используем optRP, чтобы не было ошибки "unused"
+		cloudflare.HTTPClient(httpClient), // Подключаем прокси
+	}
+
+	// 3. Создаем сам клиент Cloudflare
+	// Используем временную переменную cfClient, чтобы не затереть переменную 'api'
+	var cfClient *cloudflare.API
 	var err error
+
 	if m["apitoken"] != "" {
-		api.cfClient, err = cloudflare.NewWithAPIToken(m["apitoken"], optRP)
+		cfClient, err = cloudflare.NewWithAPIToken(m["apitoken"], opts...)
 	} else {
-		api.cfClient, err = cloudflare.New(m["apikey"], m["apiuser"], optRP)
+		cfClient, err = cloudflare.New(m["apikey"], m["apiuser"], opts...)
 	}
 
 	if err != nil {
 		return nil, fmt.Errorf("cloudflare credentials: %w", err)
 	}
+
+	// 4. Присваиваем созданный клиент в структуру провайдера
+	// Судя по коду ниже (api.cfClient.Debug), поле называется cfClient
+	api.cfClient = cfClient
 
 	// Check account data if set
 	if m["accountid"] != "" {
