@@ -16,6 +16,12 @@
     "group_id": "$AED_GROUP_ID",
     "host": "$AED_HOST"
   },
+  "ALIDNS": {
+    "TYPE": "ALIDNS",
+    "access_key_id": "$ALIDNS_ACCESS_KEY_ID",
+    "access_key_secret": "$ALIDNS_ACCESS_KEY_SECRET",
+    "domain": "$ALIDNS_DOMAIN"
+  },
   "AUTODNS": {
     "TYPE": "AUTODNS",
     "context": "$AUTODNS_CONTEXT",
@@ -51,6 +57,15 @@
     "TYPE": "AZURE_DNS",
     "TenantID": "$AZURE_DNS_TENANT_ID",
     "domain": "$AZURE_DNS_DOMAIN"
+  },
+  "AZURE_PRIVATE_DNS": {
+    "ClientID": "$AZURE_PRIVATE_DNS_CLIENT_ID",
+    "ClientSecret": "$AZURE_PRIVATE_DNS_CLIENT_SECRET",
+    "ResourceGroup": "$AZURE_PRIVATE_DNS_RESOURCE_GROUP",
+    "SubscriptionID": "$AZURE_PRIVATE_DNS_SUBSCRIPTION_ID",
+    "TYPE": "AZURE_PRIVATE_DNS",
+    "TenantID": "$AZURE_PRIVATE_DNS_TENANT_ID",
+    "domain": "$AZURE_PRIVATE_DNS_DOMAIN"
   },
   "BIND": {
     "TYPE": "BIND",
@@ -108,6 +123,11 @@
     "domain": "$DIGITALOCEAN_DOMAIN",
     "token": "$DIGITALOCEAN_TOKEN"
   },
+  "DNSCALE": {
+    "TYPE": "DNSCALE",
+    "api_key": "$DNSCALE_API_KEY",
+    "domain": "$DNSCALE_DOMAIN"
+  },
   "DNSIMPLE": {
     "TYPE": "DNSIMPLE",
     "baseurl": "https://api.sandbox.dnsimple.com",
@@ -163,6 +183,12 @@
     "api-key": "$GCORE_API_KEY",
     "domain": "$GCORE_DOMAIN"
   },
+  "GIDINET": {
+    "TYPE": "GIDINET",
+    "domain": "$GIDINET_DOMAIN",
+    "password": "$GIDINET_PASSWORD",
+    "username": "$GIDINET_USERNAME"
+  },
   "HEDNS": {
     "TYPE": "HEDNS",
     "domain": "$HEDNS_DOMAIN",
@@ -181,15 +207,6 @@
     "api_token": "$HETZNER_V2_API_TOKEN",
     "domain": "$HETZNER_V2_DOMAIN"
   },
-  "HEXONET": {
-    "TYPE": "HEXONET",
-    "apientity": "$HEXONET_ENTITY",
-    "apilogin": "$HEXONET_UID",
-    "apipassword": "$HEXONET_PW",
-    "debugmode": "$HEXONET_DEBUGMODE",
-    "domain": "$HEXONET_DOMAIN",
-    "ipaddress": "$HEXONET_IP"
-  },
   "HOSTINGDE": {
     "TYPE": "HOSTINGDE",
     "authToken": "$HOSTINGDE_AUTHTOKEN",
@@ -201,6 +218,11 @@
     "SecretKey": "$HUAWEICLOUD_KEY",
     "TYPE": "HUAWEICLOUD",
     "domain": "$HUAWEICLOUD_DOMAIN"
+  },
+  "INFOMANIAK": {
+    "TYPE": "INFOMANIAK",
+    "domain": "$INFOMANIAK_DOMAIN",
+    "token": "$INFOMANIAK_TOKEN"
   },
   "INWX": {
     "TYPE": "INWX",
@@ -232,6 +254,13 @@
     "domain": "$LUADNS_DOMAIN",
     "email": "$LUADNS_EMAIL"
   },
+  "MIKROTIK": {
+    "TYPE": "MIKROTIK",
+    "domain": "$MIKROTIK_DOMAIN",
+    "host": "$MIKROTIK_HOST",
+    "password": "$MIKROTIK_PASSWORD",
+    "username": "$MIKROTIK_USERNAME"
+  },
   "MYTHICBEASTS": {
     "TYPE": "MYTHICBEASTS",
     "domain": "$MYTHICBEASTS_DOMAIN",
@@ -252,6 +281,11 @@
     "apiuser": "$NAMEDOTCOM_USER",
     "domain": "$NAMEDOTCOM_DOMAIN"
   },
+  "NETBIRD": {
+    "TYPE": "NETBIRD",
+    "domain": "$NETBIRD_DOMAIN",
+    "token": "$NETBIRD_TOKEN"
+  },
   "NETCUP": {
     "TYPE": "NETCUP",
     "api-key": "$NETCUP_KEY",
@@ -264,6 +298,12 @@
     "domain": "$NETLIFY_DOMAIN",
     "slug": "$NETLIFY_ACCOUNT_SLUG",
     "token": "$NETLIFY_TOKEN"
+  },
+  "NETNOD": {
+    "TYPE": "NETNOD",
+    "apiKey": "$NETNOD_APIKEY",
+    "apiUrl": "$NETNOD_APIURL",
+    "domain": "$NETNOD_DOMAIN"
   },
   "NS1": {
     "TYPE": "NS1",
@@ -333,12 +373,28 @@
     "domain": "$SL_DOMAIN",
     "username": "$SL_USERNAME"
   },
+  "TENCENTDNS": {
+    "TYPE": "TENCENTDNS",
+    "domain": "$TENCENTDNS_DOMAIN",
+    "secret_id": "$TENCENTDNS_SECRET_ID",
+    "secret_key": "$TENCENTDNS_SECRET_KEY",
+    "site": "$TENCENTDNS_SITE"
+  },
   "TRANSIP": {
     "AccessToken": "$TRANSIP_ACCESS_TOKEN",
     "AccountName": "$TRANSIP_ACCOUNT_NAME",
     "PrivateKey": "$TRANSIP_PRIVATE_KEY",
     "TYPE": "TRANSIP",
     "domain": "$TRANSIP_DOMAIN"
+  },
+  "UNIFI": {
+    "TYPE": "UNIFI",
+    "api_key": "$UNIFI_API_KEY",
+    "domain": "$UNIFI_DOMAIN",
+    "host": "$UNIFI_HOST",
+    "knownFailures": "26,43",
+    "site": "$UNIFI_SITE",
+    "skip_tls_verify": "$UNIFI_SKIP_TLS_VERIFY"
   },
   "VERCEL": {
     "TYPE": "VERCEL",

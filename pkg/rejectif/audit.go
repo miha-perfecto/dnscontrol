@@ -1,6 +1,6 @@
 package rejectif
 
-import "github.com/StackExchange/dnscontrol/v4/models"
+import "github.com/DNSControl/dnscontrol/v4/models"
 
 // Auditor stores a list of checks to be executed during Audit().
 type Auditor struct {
@@ -32,7 +32,15 @@ func (aud *Auditor) Audit(records models.Records) (errs []error) {
 
 	// For each record, call the checks for that type, gather errors.
 	for _, rc := range records {
+		// First, run type-specific checks
 		for _, f := range aud.checksFor[rc.Type] {
+			e := f(rc)
+			if e != nil {
+				errs = append(errs, e)
+			}
+		}
+		// Then, run wildcard checks that apply to all record types
+		for _, f := range aud.checksFor["*"] {
 			e := f(rc)
 			if e != nil {
 				errs = append(errs, e)

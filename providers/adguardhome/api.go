@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/StackExchange/dnscontrol/v4/pkg/printer"
+	"github.com/DNSControl/dnscontrol/v4/pkg/printer"
 )
 
 type adguardHomeProvider struct {
@@ -72,9 +72,8 @@ retry:
 
 	if resp.StatusCode == http.StatusOK {
 		return bodyString, nil
-	} else {
-		return nil, errors.New(string(bodyString))
 	}
+	return nil, errors.New(string(bodyString))
 }
 
 func (c *adguardHomeProvider) get(endpoint string) ([]byte, error) {
@@ -112,9 +111,8 @@ retry:
 
 	if resp.StatusCode == http.StatusOK {
 		return bodyString, nil
-	} else {
-		return nil, errors.New(string(bodyString))
 	}
+	return nil, errors.New(string(bodyString))
 }
 
 func (c *adguardHomeProvider) createRecord(r rewriteEntry) error {

@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/StackExchange/dnscontrol/v4/pkg/printer"
+	"github.com/DNSControl/dnscontrol/v4/pkg/printer"
 	"github.com/mattn/go-isatty"
 )
 
@@ -279,7 +279,7 @@ type domainsResult struct {
 		//		BusinessUnit             string        `json:"businessUnit"`
 		//		BrandName                string        `json:"brandName"`
 		//		IdnReferenceName         string        `json:"idnReferenceName"`
-		//		CustomFields             []interface{} `json:"customFields"`
+		//		CustomFields             any           `json:"customFields"`
 		//		Account                  struct {
 		//			AccountNumber string `json:"accountNumber"`
 		//			AccountName   string `json:"accountName"`

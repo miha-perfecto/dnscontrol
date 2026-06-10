@@ -3,7 +3,7 @@ package normalize
 import (
 	"testing"
 
-	"github.com/StackExchange/dnscontrol/v4/models"
+	"github.com/DNSControl/dnscontrol/v4/models"
 )
 
 func makeRC(label, domain, target string, rc models.RecordConfig) *models.RecordConfig {
@@ -36,6 +36,8 @@ func TestImportTransform(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	// No need to call rtypecontrol.FixLegacyDC here.  makeRC will (in the future) populate .F as needed.
+
 	if errs := ValidateAndNormalizeConfig(cfg); len(errs) != 0 {
 		for _, err := range errs {
 			t.Error(err)

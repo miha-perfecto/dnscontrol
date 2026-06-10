@@ -65,6 +65,14 @@ func TestTxtDecode(t *testing.T) {
 		{`"q4backs\\\\lash"`, []string{`q4backs\\lash`}},
 		// HETZNER includes a space after the last quote. Make sure we handle that.
 		{`"one" "more" `, []string{`one`, `more`}},
+		// Edge case: unquoted strings are treated as literals to be joined with no space!
+		{`v=spf1 -all`, []string{`v=spf1-all`}},
+		// ROUTE53 has been observed returning long TXT records with adjacent
+		// quoted character-strings and no separator between them.
+		// Whether or not this is valid is questionable but we'll accept it because... Amazon.
+		{`"foo""bar"`, []string{`foo`, `bar`}},
+		{`"a""b""c"`, []string{`a`, `b`, `c`}},
+		{`"escaped\"quote""next"`, []string{`escaped"quote`, `next`}},
 	}
 	for i, test := range tests {
 		got, err := txtDecode(test.data)
@@ -84,6 +92,8 @@ func TestTxtEncode(t *testing.T) {
 		data     []string
 		expected string
 	}{
+		{[]string{"simple"}, `"simple"`},
+		{[]string{`"quoted"`}, `"\"quoted\""`},
 		{[]string{}, `""`},
 		{[]string{``}, `""`},
 		{[]string{`foo`}, `"foo"`},

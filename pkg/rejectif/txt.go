@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/StackExchange/dnscontrol/v4/models"
+	"github.com/DNSControl/dnscontrol/v4/models"
 )
 
 // Keep these in alphabetical order.
@@ -14,6 +14,29 @@ import (
 func TxtHasBackslash(rc *models.RecordConfig) error {
 	if strings.Contains(rc.GetTargetTXTJoined(), `\`) {
 		return errors.New("txtstring contains backslashes")
+	}
+	return nil
+}
+
+// TxtHasUnpairedBackslash audits TXT records for strings that contain an odd number of consecutive backslashes.
+// Some providers strip single backslashes or convert odd consecutive backslashes to even.
+// e.g., "1back\slash" -> "1backslash", "3back\\\slash" -> "3back\\slash".
+func TxtHasUnpairedBackslash(rc *models.RecordConfig) error {
+	txt := rc.GetTargetTXTJoined()
+	i := 0
+	for i < len(txt) {
+		if txt[i] == '\\' {
+			count := 0
+			for i < len(txt) && txt[i] == '\\' {
+				count++
+				i++
+			}
+			if count%2 == 1 {
+				return errors.New("txtstring contains unpaired backslash (odd count)")
+			}
+		} else {
+			i++
+		}
 	}
 	return nil
 }
@@ -87,7 +110,7 @@ func TxtLongerThan(maxLength int) func(rc *models.RecordConfig) error {
 	}
 }
 
-// TxtStartsOrEndsWithSpaces audits TXT records that starts or ends with spaces
+// TxtStartsOrEndsWithSpaces audits TXT records that starts or ends with spaces.
 func TxtStartsOrEndsWithSpaces(rc *models.RecordConfig) error {
 	txt := rc.GetTargetTXTJoined()
 	if len(txt) > 0 && (txt[0] == ' ' || txt[len(txt)-1] == ' ') {

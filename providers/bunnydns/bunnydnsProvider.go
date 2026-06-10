@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/StackExchange/dnscontrol/v4/models"
-	"github.com/StackExchange/dnscontrol/v4/providers"
+	"github.com/DNSControl/dnscontrol/v4/models"
+	"github.com/DNSControl/dnscontrol/v4/pkg/providers"
 )
 
 var features = providers.DocumentationNotes{
@@ -19,13 +19,15 @@ var features = providers.DocumentationNotes{
 	providers.CanUseDHCID:            providers.Cannot(),
 	providers.CanUseDS:               providers.Cannot(),
 	providers.CanUseDSForChildren:    providers.Cannot(),
+	providers.CanUseHTTPS:            providers.Can(),
 	providers.CanUseLOC:              providers.Cannot(),
 	providers.CanUseNAPTR:            providers.Cannot(),
 	providers.CanUsePTR:              providers.Can(),
 	providers.CanUseSOA:              providers.Cannot(),
 	providers.CanUseSRV:              providers.Can(),
 	providers.CanUseSSHFP:            providers.Cannot(),
-	providers.CanUseTLSA:             providers.Cannot(),
+	providers.CanUseSVCB:             providers.Can(),
+	providers.CanUseTLSA:             providers.Can(),
 	providers.DocCreateDomains:       providers.Can(),
 	providers.DocDualHost:            providers.Cannot(),
 	providers.DocOfficiallySupported: providers.Cannot(),
@@ -47,6 +49,23 @@ func init() {
 	providers.RegisterMaintainer(providerName, providerMaintainer)
 
 	providers.RegisterCustomRecordType("BUNNY_DNS_RDR", providerName, "")
+	providers.RegisterCustomRecordType("BUNNY_DNS_PZ", providerName, "")
+
+	providers.RegisterCredsMetadata(providerName, providers.CredsMetadata{
+		DisplayName: "Bunny DNS",
+		Kind:        providers.KindDNS,
+		DocsURL:     "https://docs.dnscontrol.org/provider/bunnydns",
+		PortalURL:   "https://dash.bunny.net/account/api-key",
+		Fields: []providers.CredsField{
+			{
+				Key:      "api_key",
+				Label:    "API key",
+				Help:     "Bunny.net account API key.",
+				Secret:   true,
+				Required: true,
+			},
+		},
+	})
 }
 
 func newBunnydns(settings map[string]string, _ json.RawMessage) (providers.DNSServiceProvider, error) {

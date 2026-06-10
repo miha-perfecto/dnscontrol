@@ -9,10 +9,11 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/StackExchange/dnscontrol/v4/models"
-	"github.com/StackExchange/dnscontrol/v4/pkg/printer"
-	"github.com/StackExchange/dnscontrol/v4/pkg/rfc4183"
-	"github.com/StackExchange/dnscontrol/v4/pkg/transform"
+	"github.com/DNSControl/dnscontrol/v4/models"
+	"github.com/DNSControl/dnscontrol/v4/pkg/printer"
+	"github.com/DNSControl/dnscontrol/v4/pkg/rfc4183"
+	"github.com/DNSControl/dnscontrol/v4/pkg/rtypecontrol"
+	"github.com/DNSControl/dnscontrol/v4/pkg/transform"
 	"github.com/robertkrimen/otto"              // load underscore js into vm by default
 	_ "github.com/robertkrimen/otto/underscore" // required by otto
 	"github.com/xddxdd/ottoext/fetch"
@@ -33,7 +34,7 @@ var helpersJsFileName = "pkg/js/helpers.js"
 // far as require() is concerned, not the actual os.Getwd().
 var currentDirectory string
 
-// EnableFetch sets whether to enable fetch() in JS execution environment
+// EnableFetch sets whether to enable fetch() in JS execution environment.
 var EnableFetch bool = false
 
 // ExecuteJavaScript accepts a javascript file and runs it, returning the resulting dnsConfig.
@@ -69,7 +70,7 @@ func ExecuteJavascriptString(script []byte, devMode bool, variables map[string]s
 	}
 
 	// add functions to otto
-	functions := map[string]interface{}{
+	functions := map[string]any{
 		"require":   require,
 		"REV":       reverse,
 		"REVCOMPAT": reverseCompat,
@@ -122,6 +123,11 @@ func ExecuteJavascriptString(script []byte, devMode bool, variables map[string]s
 
 	err = conf.PostProcess()
 	if err != nil {
+		return nil, err
+	}
+	// No need to call FixLegacyDC here. These records were created from dnsconfig.js, not from a provider.
+
+	if err := rtypecontrol.ImportRawRecords(conf.Domains); err != nil {
 		return nil, err
 	}
 
@@ -192,15 +198,15 @@ func require(call otto.FunctionCall) otto.Value {
 
 func listFiles(call otto.FunctionCall) otto.Value {
 	// Check amount of arguments provided
-	if !(len(call.ArgumentList) >= 1 && len(call.ArgumentList) <= 3) {
+	if len(call.ArgumentList) < 1 || len(call.ArgumentList) > 3 {
 		throw(call.Otto, "glob requires at least one argument: folder (string). "+
 			"Optional: recursive (bool) [true], fileExtension (string) [.js]")
 	}
 
 	// Check if provided parameters are valid
 	// First: Let's check dir.
-	if !(call.Argument(0).IsDefined() && call.Argument(0).IsString() &&
-		len(call.Argument(0).String()) > 0) {
+	if !call.Argument(0).IsDefined() || !call.Argument(0).IsString() ||
+		len(call.Argument(0).String()) == 0 {
 		throw(call.Otto, "glob: first argument needs to be a path, provided as string.")
 	}
 	dir := call.Argument(0).String() // Path where to start listing

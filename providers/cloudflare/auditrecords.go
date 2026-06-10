@@ -1,8 +1,8 @@
 package cloudflare
 
 import (
-	"github.com/StackExchange/dnscontrol/v4/models"
-	"github.com/StackExchange/dnscontrol/v4/pkg/rejectif"
+	"github.com/DNSControl/dnscontrol/v4/models"
+	"github.com/DNSControl/dnscontrol/v4/pkg/rejectif"
 )
 
 // AuditRecords returns a list of errors corresponding to the records
@@ -11,9 +11,7 @@ import (
 func AuditRecords(records []*models.RecordConfig) []error {
 	a := rejectif.Auditor{}
 
-	a.Add("TXT", rejectif.TxtHasTrailingSpace) // Last verified 2022-06-18
-
-	a.Add("TXT", rejectif.TxtIsEmpty) // Last verified 2022-06-18
+	a.Add("TXT", rejectif.TxtIsEmpty) // Last verified 2026-01-21
 
 	return a.Audit(records)
 }

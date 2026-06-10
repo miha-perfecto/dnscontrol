@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/StackExchange/dnscontrol/v4/models"
+	"github.com/DNSControl/dnscontrol/v4/models"
 )
 
 func TestRecordToNative_1(t *testing.T) {
@@ -15,10 +15,8 @@ func TestRecordToNative_1(t *testing.T) {
 	rc.MustSetTarget("1.2.3.4")
 	rc.Type = "A"
 
-	ns := recordToNative(rc, 0)
-
-	nst := reflect.TypeOf(ns).Kind()
-	if nst != reflect.TypeOf(paramStruct{}).Kind() {
+	nst := reflect.TypeFor[paramStruct]().Kind()
+	if nst != reflect.TypeFor[paramStruct]().Kind() {
 		t.Errorf("recordToNative produced unexpected type")
 	}
 }
