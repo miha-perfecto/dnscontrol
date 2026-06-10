@@ -17,12 +17,12 @@ import (
 	"github.com/DNSControl/dnscontrol/v4/models"
 	"github.com/DNSControl/dnscontrol/v4/pkg/diff2"
 	"github.com/DNSControl/dnscontrol/v4/pkg/printer"
-	"github.com/DNSControl/dnscontrol/v4/pkg/transform"
-	"github.com/DNSControl/dnscontrol/v4/pkg/zonecache"
 	"github.com/DNSControl/dnscontrol/v4/pkg/providers"
+	"github.com/DNSControl/dnscontrol/v4/pkg/transform"
+	"github.com/DNSControl/dnscontrol/v4/pkg/txtutil"
+	"github.com/DNSControl/dnscontrol/v4/pkg/zonecache"
 	"github.com/DNSControl/dnscontrol/v4/providers/cloudflare/rtypes/cfsingleredirect"
 	"github.com/DNSControl/dnscontrol/v4/pkg/proxyutil"
-        "github.com/DNSControl/dnscontrol/v4/pkg/txtutil"
 )
 
 /*
